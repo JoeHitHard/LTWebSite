@@ -65,7 +65,7 @@ class GetUserTeachingRequests extends Component{
                                 <br/>
                                 <a  id="myLink" href={k.youtubelink} target="_blank" rel="noopener noreferrer"><i className="fa fa-youtube-square" style={this.linkStyle}></i></a>
                                 <br/>
-                                <button className="btn btn-primary" onClick={this.createObjectToEdit}  value={JSON.stringify(k)} >Edit</button>
+                                <button className="btn btn-primary" onClick={this.changeEditObject}  value={JSON.stringify(k)} >Edit</button>
                                 
                             </div>
                         );

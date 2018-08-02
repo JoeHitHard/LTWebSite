@@ -15,6 +15,9 @@ class MainHeader extends Component {
     if(event.target.value==="logout"){
       this.resetNow();
     }
+    if(event.target.value==="userOptions"){
+      this.props.change();
+    }
   }
   capatalizeNow={
     textTransform:"uppercase",
@@ -27,10 +30,8 @@ class MainHeader extends Component {
         <div className="wowState">
           <div className="nav nav-pills">
             <div className="btn-group">
-              <select style={this.capatalizeNow} className="btn btn-primary" value={this.state.value} onChange={this.handleChange}>
-                <option className="btn btn-outline-success">{this.props.name}</option>
-                <option className="btn btn-outline-danger" value="logout">Log Out</option>
-              </select>
+              <button className="btn btn-outline-success" onClick={this.props.change}>{this.props.name}</button>
+              <button className="btn btn-outline-danger" onClick={this.resetNow}>Log Out</button>
             </div>
           </div>
         </div>

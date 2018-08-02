@@ -6,9 +6,8 @@ import LogIn from './Login.js';
 import SignIn from './SignIn.js';
 import MainHeader from './MainHeader.js';
 import {Helmet} from 'react-helmet';
-import PostARequest from './PostARequest.js';
-import GetRequest from './GetRequests';
-import GetUserRequest from './GetUserRequests';
+import ViewPosts from './ViewPosts.js';
+import ShowUserOptions from './ShowUserOptions';
 class App extends Component {
   constructor(props){
     super(props);
@@ -23,22 +22,19 @@ class App extends Component {
       objectToRender:null,
     }
   }
-  changeToPostARequest=()=>{
+  
+  changeToShowUserOptions=()=>{
     this.setState({
-      objectToRender: <PostARequest username={this.state.userName} token={this.state.token} locationintial={this.state.locationIntial}/>, 
+      objectToRender: <ShowUserOptions change={this.changeToViewPosts} userid={this.state.userid} user={this.state.userName} token={this.state.token}/>, 
     });
   }
-  changeToGetRequest=()=>{
+  changeToViewPosts=()=>{
     this.setState({
-      objectToRender: <GetRequest user={this.state.userName} token={this.state.token}/>, 
-    });
-  }
-  changeToGetUserRequest=()=>{
-    this.setState({
-      objectToRender: <GetUserRequest user={this.state.userName} token={this.state.token}/>, 
+      objectToRender: <ViewPosts locationintial={this.state.locationIntial} userid={this.state.userid} user={this.state.userName} token={this.state.token}/>, 
     });
   }
   render() {
+    
     if(this.state.willSignIn){
       return(
         <div className="App">
@@ -47,13 +43,16 @@ class App extends Component {
             </Helmet>
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
-            <MainHeader className="wowState" name={this.state.userName} resetN={this.setIntialState} loggedin={this.state.isLoggedIn}/>
+            <MainHeader change={this.changeToShowUserOptions} className="wowState" name={this.state.userName} resetN={this.setIntialState} loggedin={this.state.isLoggedIn}/>
           </header>
           <SignIn mainSS={this.changeSignIn}/>
         </div>
       );
     }
     if(this.state.isLoggedIn===true){
+      if(!this.state.objectToRender){
+        this.changeToViewPosts();
+      }
       return (
         <div className="App">
           <Helmet>
@@ -61,22 +60,9 @@ class App extends Component {
           </Helmet>
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
-            <MainHeader className="wowState" name={this.state.userName} resetN={this.setIntialState} loggedin={this.state.isLoggedIn}/>
+            <MainHeader change={this.changeToShowUserOptions} className="wowState" name={this.state.userName} resetN={this.setIntialState} loggedin={this.state.isLoggedIn}/>
           </header>
-          <div className="ccard text-white bg-primary mb-3">
-            <div className="nav nav-pills">
-              <li class="nav-item">
-                <button className="btn btn-primary" onClick={this.changeToPostARequest} >Post A Request</button>
-              </li>
-              <li class="nav-item">
-                <button className="btn btn-primary" onClick={this.changeToGetRequest} >Get All Requests</button>
-              </li>
-              <li class="nav-item">
-                <button className="btn btn-primary" onClick={this.changeToGetUserRequest} >Get My Requests</button>
-              </li>
-            </div>
-            {this.state.objectToRender}
-          </div>
+          {this.state.objectToRender}
         </div>
     );
     }
@@ -87,7 +73,7 @@ class App extends Component {
           </Helmet>
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
-            <MainHeader className="wowState" name={this.state.userName} loggedin={this.state.isLoggedIn}/>
+            <MainHeader change={this.changeToShowUserOptions} className="wowState" name={this.state.userName} loggedin={this.state.isLoggedIn}/>
           </header>
           <LogIn mainSS={this.setLogInMainState} changeSignIn={this.changeSignIn}/>
       </div>

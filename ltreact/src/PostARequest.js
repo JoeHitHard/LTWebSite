@@ -29,6 +29,7 @@ class PostARequest extends Component{
         return (
             <div className="App">
               <div className="ccard text-white bg-primary mb-3">
+              <h1 className="card-title">Post Requests</h1>
                 <div className="nav nav-pills">
                   <li class="nav-item">
                     <button className="btn btn-primary" onClick={this.changeToTeacher} >Teacher</button>
