@@ -1,0 +1,44 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40px;
+  position: relative;
+  float: left;
+}
+.wowState{
+  position: relative;
+  float: right;
+}
+.App-header {
+  background-color: #222;
+  height: 80px;
+
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+@keyframes App-logo-spin {
+  from { transform: rotate3d(0,0,1,0deg) }
+  to { transform: rotate3d(0,0,1,360deg) }
+}
+input:invalid + .validity:after {
+  content: '✖';
+  color: #f00;
+  padding-left: 5px;
+}
+
+input:valid + .validity:after {
+  content: '✓';
+  color: #26b72b;
+  padding-left: 5px;
+}
