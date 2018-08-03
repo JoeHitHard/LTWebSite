@@ -227,3 +227,61 @@ class EditTeachersRequestView(APIView):
                 "error": error,
             }
             return Response(context, status=300)
+
+
+class DeleteTeachersRequestView(APIView):
+    authentication_classes = (BasicAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self,request):
+        try:
+            userid = request.data["user"]
+            tokenkey = request.data["token"]
+            user = User.objects.get(username=userid)
+            token =Token.objects.get(key=tokenkey)
+            if user and token:
+                if user.id == token.user_id:
+
+                    id=int(request.data["requestid"])
+                    # import ipdb
+                    # ipdb.set_trace()
+                    tr=TeachingRequest.objects.get(id=id)
+                    if(tr):
+                        if(tr.user.id==user.id):
+                            tr.delete()
+                            context = {
+                                "delete": True,
+                            }
+                            return Response(context, status=300)
+                        else:
+                            context = {
+                                "delete": False,
+                                "error": "Invalid User..."
+                            }
+                            return Response(context, status=300)
+                    else:
+                        context = {
+                            "delete": False,
+                            "error": "Invalid Request id..."
+                        }
+                        return Response(context, status=300)
+                else:
+                    context = {
+                        "delete": False,
+                        "error": "Invalid token...",
+                    }
+                    return Response(context, status=300)
+            else:
+                context = {
+                    "delete": False,
+                    "error": "Please Login...",
+                }
+                return Response(context, status=300)
+        except Exception as ex:
+            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+            error = template.format(type(ex).__name__, ex.args)
+            context = {
+                "delete": False,
+                "error": error,
+            }
+            return Response(context, status=300)

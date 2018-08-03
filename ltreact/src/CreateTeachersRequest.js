@@ -123,15 +123,16 @@ class CreateTeachingRequest extends Component{
                     </label>
                     <br/>
                     <label>
-                        Category:
-                        <input className="form-control"  type="text" onChange={this.categoryEntered} name="category" placeholder="Category..."/>
-                    </label>
-                    <br/>
-                    <label>
                         Description:
                         <textarea class="form-control" id="descriprion" onChange={this.descriptionEntered} rows="4" placeholder="Enter your talent Description..."></textarea>
                     </label>
                     <br/>
+                    <label>
+                        Category:
+                        <input className="form-control"  type="text" onChange={this.categoryEntered} name="category" placeholder="Category..."/>
+                    </label>
+                    <br/>
+                    
                     <label>
                         YouTube Link:
                         <input className="form-control" onChange={this.youTubeLinkEntered} type="text"  placeholder="YouTube Link..."/>

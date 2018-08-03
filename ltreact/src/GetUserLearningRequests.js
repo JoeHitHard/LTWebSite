@@ -12,6 +12,7 @@ class GetUserLearningRequests extends Component{
             token:props.token,
             objects:null,
             isEnd:null,
+            message:null,
             objectToEdit:null,
         };
     }
@@ -26,6 +27,33 @@ class GetUserLearningRequests extends Component{
          this.setState({
              objectToEdit:obj,
             })
+        }
+        deleteARequest=(event)=>{
+            var reqid=event.target.value;
+            fetch('http://127.0.0.1:8000/deleteUserLearningRequest/',{
+                    method: 'POST',
+                    headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization' : 'Token '+this.state.token,
+                    },
+                    body: JSON.stringify({
+                        user: this.state.user,
+                        token:this.state.token,
+                        requestid:reqid,
+                    }),
+                }).then(response=>response.json()).then(res=>{
+                    if(res.delete){
+                        this.setState({
+                            message:"Learning Request Has been Deleted",
+                        });
+                    }
+                    else{
+                        this.setState({
+                           message:res.error,
+                        });
+                    }
+                });
         }
     loadLearningRequests=()=>{
         if(!(this.state.isEnd)){
@@ -65,8 +93,8 @@ class GetUserLearningRequests extends Component{
                                 <br/>
                                 <a  id="myLink" href={k.youtubelink} target="_blank" rel="noopener noreferrer"><i className="fa fa-youtube-square" style={this.linkStyle}></i></a>
                                 <br/>
-                                <button className="btn btn-primary" onClick={this.changeEditObject} value={JSON.stringify(k)} >Edit</button>
-                                
+                                <button className="btn btn-outline-success" onClick={this.changeEditObject} value={JSON.stringify(k)} >Edit</button>
+                                <button className="btn btn-outline-danger" onClick={this.deleteARequest} value={k.id} >Delete</button>
                             </div>
                         );
                         objectList.push(reqObjects);
@@ -88,6 +116,7 @@ class GetUserLearningRequests extends Component{
         return(
             <div  className="card text-white bg-primary mb-3">
                 <h1 className="card-title">Learning Requests</h1>
+                <label>{this.state.message}</label>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
                 {this.state.objectToEdit}
                 {this.state.objects}

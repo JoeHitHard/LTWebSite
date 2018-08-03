@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import './mainBoot.css';
 import EditTeachingRequest from './EditTeachingRequest';
+import PopUp from './PopUpMessage';
 class GetUserTeachingRequests extends Component{
     constructor(props){
         super(props);
@@ -13,6 +14,7 @@ class GetUserTeachingRequests extends Component{
             objects:null,
             isEnd:null,
             objectToEdit:null,
+            isOpen:false,
         };
     }
     linkStyle={
@@ -27,6 +29,40 @@ class GetUserTeachingRequests extends Component{
              objectToEdit:obj,
             })
         }
+    deleteARequest=(event)=>{
+        var reqid=event.target.value;
+        fetch('http://127.0.0.1:8000/deleteUserTeachingRequest/',{
+                method: 'POST',
+                headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : 'Token '+this.state.token,
+                },
+                body: JSON.stringify({
+                    user: this.state.user,
+                    token:this.state.token,
+                    requestid:reqid,
+                }),
+            }).then(response=>response.json()).then(res=>{
+                if(res.delete){
+                    this.setState({
+                        isOpen:true,
+                        popUpMessage:"Teaching Request Has Been Deleted"
+                    });
+                }
+                else{
+                    this.setState({
+                        isOpen:true,
+                        popUpMessage:res.error,
+                    });
+                }
+            });
+    }
+    toggleModal = () => {
+        this.setState({
+          isOpen: !this.state.isOpen
+        });
+    }
     loadTeachingRequests=()=>{
         if(!(this.state.isEnd)){
             fetch('http://127.0.0.1:8000/getUserTeachingRequest/',{
@@ -65,8 +101,8 @@ class GetUserTeachingRequests extends Component{
                                 <br/>
                                 <a  id="myLink" href={k.youtubelink} target="_blank" rel="noopener noreferrer"><i className="fa fa-youtube-square" style={this.linkStyle}></i></a>
                                 <br/>
-                                <button className="btn btn-primary" onClick={this.changeEditObject}  value={JSON.stringify(k)} >Edit</button>
-                                
+                                <button className="btn btn-outline-success" onClick={this.changeEditObject}  value={JSON.stringify(k)} >Edit</button>
+                                <button className="btn btn-outline-danger" onClick={this.deleteARequest}  value={k.id} >Delete</button>
                             </div>
                         );
                         objectList.push(reqObjects);
@@ -83,16 +119,18 @@ class GetUserTeachingRequests extends Component{
             });
         }
     }
-    render(){
+    render() {
         this.loadTeachingRequests();
         return(
             <div  className="card text-white bg-primary mb-3">
+                <label>{this.state.message}</label>
                 <h1 className="card-title">Teaching Requests</h1>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
                 {this.state.objectToEdit}
                 {this.state.objects}
                 {this.state.isEnd}
                 <br/>
+                <PopUp show={this.state.isOpen} onClose={this.toggleModal}>{this.state.popUpMessage}</PopUp>
                 <button className="btn btn-primary" onClick={this.loadTeachingRequests}  value="Submit" >Load</button>
             </div>
         );

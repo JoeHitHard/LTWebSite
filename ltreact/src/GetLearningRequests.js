@@ -70,6 +70,7 @@ class GetLearningRequests extends Component{
         }
     }
     render(){
+        this.loadLearningRequests();
         return(
             <div  className="card text-white bg-primary mb-3">
                 <h1 className="card-title">Learning Requests</h1>

@@ -13,5 +13,6 @@ urlpatterns=[
     path(r'editLearningRequest/',LearningRequestViews.EditLearningRequestView.as_view()),
     path(r'getUserTeachingRequest/', TeachersRequestViews.GetUserTeachersRequestView.as_view()),
     path(r'getUserLearningRequest/', LearningRequestViews.GetUserLearningRequestView.as_view()),
-
+    path(r'deleteUserTeachingRequest/', TeachersRequestViews.DeleteTeachersRequestView.as_view()),
+    path(r'deleteUserLearningRequest/', LearningRequestViews.DeleteLearningRequestView.as_view()),
 ]
